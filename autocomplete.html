@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Google Places Autocomplete - Abhinav Pandey </title>
+        <meta name="author" content="Abhinav Pandey">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    </head>
+    <body>
+        <div class="row">
+            <div class="col s6 offset-s3">
+                <input id="places-autocomplete" class="controls" type="text" placeholder="Search Box">
+                <h5>Lat: <span id="lat"></span></h5>
+                <h5>Long: <span id="lng"></span></h5>
+            </div>
+        </div>
+        <script>
+            function initAutocomplete() {
+                var input = document.getElementById('places-autocomplete');
+                var searchBox = new google.maps.places.SearchBox(input);
+                searchBox.addListener('places_changed', function() {
+                    var places = searchBox.getPlaces();
+                    
+                    if(places.length == 0){
+                        return;
+                    }
+                    places.forEach(function(place){
+                        if(!place.geometry) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        document.getElementById('lat').innerHTML = place.geometry.location.lat();
+                        document.getElementById('lng').innerHTML = place.geometry.location.lng();
+                    });
+                });
+            }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmZ07JPDSiNwu5_nt_nXrdjE5a_sew36o&libraries=places&callback=initAutocomplete" async defer></script>
+    </body>
+</html>
